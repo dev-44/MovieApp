@@ -1,4 +1,5 @@
 {
   "name": "ITTIMovieApp",
-  "displayName": "ITTIMovieApp"
+  "displayName": "ITTIMovieApp",
+  "backgroundColor": "#FFFFFF"
 }
