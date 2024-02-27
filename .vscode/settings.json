@@ -1,0 +1,49 @@
+{
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+      "editor.formatOnPaste": false,
+      "editor.formatOnType": false,
+      "editor.formatOnSave": true,
+      "editor.formatOnSaveMode": "file"
+    },
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescriptreact]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.startupEditor": "none",
+    "editor.inlineSuggest.enabled": true,
+    "github.copilot.enable": {
+      "*": true,
+      "plaintext": true,
+      "markdown": true,
+      "scminput": false,
+      "yaml": false
+    },
+    "git.confirmSync": false,
+    "workbench.colorTheme": "Default Dark Modern",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "editor.minimap.enabled": false,
+    "editor.formatOnSave": true,
+    "reporting.enabled": false,
+    "editor.renderWhitespace": "all",
+    "editor.cursorSurroundingLines": 5,
+    "activitusbar.alignment": "Right",
+    "autoHide.panelDelay": 1,
+    "autoHide.sideBarDelay": 1,
+    "customvscodeuicss.css": ".monaco-split-view2.horizontal>.monaco-scrollable-element>.split-view-container>.split-view-view, .monaco-workbench .part>.content, .monaco-editor .overflow-guard, .monaco-editor {width: 100% !important;}",
+    "editor.stickyScroll.enabled": false
+ }
+ 
