@@ -6,17 +6,12 @@ import MovieDetails from './screens/MovieDetails';
 
 const Stack = createNativeStackNavigator()
 
-export type RootStackParamList = {
-  Home: undefined,
-  MovieDetails: undefined
-}
-
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home'>
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen name="Home" component={HomeScreen} />
-        {/* <Stack.Screen name="MovieDetails" component={MovieDetails}/> */}
+        {/* <Stack.Screen name="MovieDetails" component={MovieDetails} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,24 +1,29 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Image, StyleSheet, Text, View } from 'react-native'
+import { useNavigation, CommonActions } from '@react-navigation/native';
+import { MovieDetailsNavigationProp } from '../screens/MovieDetails';
 
 type CardItemProps = {
+    id: string;
     title: string;
     image?: string,
     description?: string;
+    rating?: string;
 }
 
-const CardItem = ({ title, image, description }: CardItemProps) => {
+const CardItem = ({ id, title, image, description, rating }: CardItemProps) => {
 
-    const navigation = useNavigation()
+    const navigation = useNavigation<MovieDetailsNavigationProp>()
 
     const handleTap = () => {
-        navigation.navigate()
+        navigation.navigate("MovieDetails", { id })
     }
     return (
         <View style={styles.container} onTouchStart={handleTap}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.text}>{title}</Text>
+            <Image source={{ uri: image }} style={styles.image} />
+            <Text style={styles.text}>{description}</Text>
+            <Text style={styles.text}>Rating: {rating}</Text>
         </View>
     )
 }
@@ -34,7 +39,12 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         alignItems: 'center',
     },
-    title: {
+    text: {
         color: 'black'
-    }
+    },
+    image: {
+        width: 80,
+        height: 80,
+        borderRadius: 14,
+    },
 })
