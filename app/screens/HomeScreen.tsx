@@ -14,29 +14,13 @@ const HomeScreen = () => {
   })
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const response = await axios.get('http://www.omdbapi.com/?i=tt3896198&apikey=35cc8d5f')
-        const response = await axios.get('http://www.omdbapi.com/?t=movie&apikey=35cc8d5f')
-        if (response) {
-          const { Title, Poster, imdbRating, Plot, imdbID } = response.data
-          setMovie({
-            id: imdbID,
-            title: Title,
-            img: Poster,
-            rating: imdbRating,
-            description: Plot
-          })
-          console.log(movie)
-        }
-      } catch (error) {
-        console.error(error)
-      }
-
-    }
-
-    fetchData()
+    //Llamar a la API
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    console.log(movie)
+  }, [movie])
 
   return (
     <View style={styles.container}>

@@ -1,21 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React, { useEffect } from 'react'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native'
-import axios from 'axios'
+import { RootStackParamList } from '../types';
 
-export type MovieDetailsNavigationProp = NativeStackNavigationProp<RootStackParamList, 'MovieDetails'>
+export type MovieDetailsNavigationProp = StackNavigationProp<RootStackParamList, 'MovieDetails'>
 export type MovieDetailsRouteProp = RouteProp<RootStackParamList, 'MovieDetails'>
-
-export type RootStackParamList = {
-  HomeScreen: undefined,
-  MovieDetails: {
-    id: string;
-    title?: string;
-    image?: string,
-    description?: string;
-  }
-}
 
 type MovieDetailsProps = {
   navigation: MovieDetailsNavigationProp;
@@ -23,6 +13,11 @@ type MovieDetailsProps = {
 }
 
 const MovieDetails = ({ navigation, route }: MovieDetailsProps) => {
+
+  useEffect(() => {
+    console.log(route.name)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <View>
