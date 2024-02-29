@@ -4,30 +4,35 @@ import { MoviesListType } from '../../types';
 import moviesService from './moviesService';
 
 const initialState: MoviesListType = {
+  movies: [],
   movie: {
     imdbID: '',
     Title: '',
     Poster: '',
     imdbRating: '',
     Plot: '',
-    LongPlot: '',
     Director: '',
     Actors: '',
-    Genre: ''
+    Genre: '',
+    Year: '',
+    Country: '',
   },
   isError: false,
   isSuccess: false,
   isLoading: false,
   isFinished: false,
   errorMessage: '',
+  searchName: '',
+  searchYear: '',
+  totalResults: 0,
 }
 
 // Get movie by Name and Year
-export const getMovie = createAsyncThunk('movies/getMovie', async (data: {name: string; year: string}, thunkAPI) => {
+export const getMovies = createAsyncThunk('movies/getMovies', async (data: {name: string; year: string, page: number}, thunkAPI) => {
   try {
-    const { name, year = '' } = data;
-    const result =  await moviesService.getMovie(name, year)
-    if (result.Response) {
+    const { name, year, page } = data;
+    const result =  await moviesService.getMovies(name, year, page)
+    if (result.Response === 'True') {
       return result
     } else {
       throw new Error('Movie not found')
@@ -53,29 +58,34 @@ export const getMovieById = createAsyncThunk('movies/getMovieById', async (id: s
   }
 })
 
+// Set Search Data
+export const setSearchData = createAsyncThunk('movies/setSearchData', async (data: {name: string; year: string}, thunkAPI) => {
+  return data
+})
+
 export const moviesSlice = createSlice({
   name: 'movies',
   initialState,
   reducers: {
-    reset: (state) => initialState
+    reset: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder.
-      addCase(getMovie.pending, (state) => {
+      addCase(getMovies.pending, (state) => {
         state.isLoading = true
         state.isFinished = false
       }).
-      addCase(getMovie.fulfilled, (state, action: PayloadAction<any>) => {
+      addCase(getMovies.fulfilled, (state, action: PayloadAction<any>) => {
         state.isLoading = false
         state.isSuccess = true
-        state.movie = action.payload
+        state.movies = action.payload.Search
+        state.totalResults = action.payload.totalResults
         state.isFinished = true
       }).
-      addCase(getMovie.rejected, (state, action: PayloadAction<any>) => {
+      addCase(getMovies.rejected, (state, action: PayloadAction<any>) => {
         state.isLoading = false
         state.isError = true
         state.errorMessage = action.payload
-        state.movie = initialState.movie
         state.isFinished = true
       }).
       addCase(getMovieById.pending, (state) => {
@@ -85,24 +95,18 @@ export const moviesSlice = createSlice({
       addCase(getMovieById.fulfilled, (state, action: PayloadAction<any>) => {
         state.isLoading = false
         state.isSuccess = true
+        state.movie = action.payload
         state.isFinished = true
-        state.movie = {
-          ...state.movie,
-          Plot: state.movie.Plot,
-          LongPlot: action.payload.Plot,
-          Director: action.payload.Director,
-          Actors: action.payload.Actors,
-          Genre: action.payload.Genre,
-          Year: action.payload.Year,
-          Country: action.payload.Country
-        }
       }).
       addCase(getMovieById.rejected, (state, action: PayloadAction<any>) => {
         state.isLoading = false
         state.isError = true
         state.errorMessage = action.payload
-        state.movie = initialState.movie
         state.isFinished = true
+      }).
+      addCase(setSearchData.fulfilled, (state, action: PayloadAction<any>) => {
+        state.searchName = action.payload.name
+        state.searchYear = action.payload.year
       })
   }
 })

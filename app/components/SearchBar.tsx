@@ -24,7 +24,7 @@ const SearchBar = ({ name, year, onChangeName, onChangeYear, onSubmit }: SearchB
                 onChangeText={onChangeName}
                 value={name}
                 style={styles.inputName}
-                onEndEditing={onSubmit}
+                onSubmitEditing={onSubmit}
             />
             <TextInput
                 placeholder="Año"
@@ -32,7 +32,7 @@ const SearchBar = ({ name, year, onChangeName, onChangeYear, onSubmit }: SearchB
                 onChangeText={onChangeYear}
                 value={year}
                 style={styles.inputYear}
-                onEndEditing={onSubmit}
+                onSubmitEditing={onSubmit}
             />
         </View>
     );
@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        // backgroundColor: '#e0e0e0',
         borderRadius: 10,
         paddingHorizontal: 10,
         marginHorizontal: 15,
@@ -73,7 +72,6 @@ const styles = StyleSheet.create({
     },
     icon: {
         margin: 0,
-        // marginRight: 5,
     },
 });
 

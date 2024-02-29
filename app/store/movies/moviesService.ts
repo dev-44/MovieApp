@@ -1,10 +1,11 @@
 import axios from "axios";
 
-const API_URL = "http://www.omdbapi.com/?apikey=35cc8d5f"
+const API_URL = `http://www.omdbapi.com/?apikey=35cc8d5f`
 
-//Get Movies By Id
-const getMovie = async (name: string, year: string = '') => {
-  const { data } = await axios.get(`${API_URL}&t=${name}`.concat(year ? `&y=${year}` : ''))
+//Get Movies
+const getMovies = async (name: string, year: string = '', page = 1) => {
+
+  const { data } = await axios.get(`${API_URL}&s=${name}&type=movie&page=${page}&y=${year}`)
   return data
 }
 
@@ -15,7 +16,7 @@ const getMovieById = async (id: string) => {
 }
 
 const moviesService = {
-  getMovie,
+  getMovies,
   getMovieById,
 }
 

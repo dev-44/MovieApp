@@ -2,9 +2,6 @@ export type RootStackParamList = {
   HomeScreen: undefined,
   MovieDetails: {
     id: string;
-    title?: string;
-    image?: string,
-    description?: string;
   }
 }
 
@@ -14,7 +11,6 @@ export type Movie = {
   Poster: string;
   imdbRating: string;
   Plot: string;
-  LongPlot: string;
   Director?: string;
   Actors?: string;
   Genre?: string;
@@ -23,10 +19,14 @@ export type Movie = {
 }
 
 export type MoviesListType ={
+  movies: Movie[],
   movie: Movie;
   isSuccess: boolean;
   isLoading: boolean;
   isError: boolean;
   isFinished: boolean;
   errorMessage: string;
+  searchName: string;
+  searchYear: string;
+  totalResults: number;
 }

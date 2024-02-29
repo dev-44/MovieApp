@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native'
 import { RootStackParamList } from '../types';
-import { getMovieById } from '../store/movies/moviesSlice'
+import { getMovieById, reset } from '../store/movies/moviesSlice'
 import { AppDispatch, RootState } from '../store';
 
 export type MovieDetailsNavigationProp = StackNavigationProp<RootStackParamList, 'MovieDetails'>
@@ -18,22 +18,29 @@ type MovieDetailsProps = {
 const MovieDetails = ({ navigation, route }: MovieDetailsProps) => {
 
   const dispatch = useDispatch<AppDispatch>()
-  const { id } = route.params
+  const id = route.params?.id || ''
   const { movie, isSuccess, isLoading } = useSelector((state: RootState) => state.movies)
 
   useEffect(() => {
-    navigation.setOptions({ title: movie.Title })
-    dispatch(getMovieById(id))
+    if (id) {
+      dispatch(getMovieById(id))
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    if (movie.imdbID !== '') {
+      navigation.setOptions({ title: movie.Title })
+    }
+  }, [movie, navigation])
+
   return (
     <>
-      {(movie.imdbID !== '' && isSuccess) ? (
+      {(movie.imdbID !== '' && isSuccess && !isLoading) ? (
         <View style={styles.card}>
           <View style={styles.header}>
-            <Image source={{ uri: movie.Poster }} style={styles.image} />
-            <View>
+            <Image source={movie.Poster !== "N/A" ? { uri: movie.Poster } : require('../assets/denise-jans-Lq6rcifGjOU-unsplash.jpg')} style={styles.image} alt='no-image' />
+            <View style={styles.titleContainer}>
               <Text style={styles.title}>{movie.Title}</Text>
               <Text style={styles.year}>{`(${movie.Year})`}</Text>
               <Text style={styles.country}>{movie.Country}</Text>
@@ -43,21 +50,13 @@ const MovieDetails = ({ navigation, route }: MovieDetailsProps) => {
           </View>
 
           <View style={styles.text}>
-            <Text style={styles.description}>{movie.LongPlot}</Text>
-            {/* <Text style={styles.content}>{article.content}</Text> */}
-
+            <Text style={styles.description}>{movie.Plot}</Text>
           </View>
 
           <View style={styles.footer}>
             <Text style={styles.footerText}><Text style={styles.boldText}>Actors: </Text>{movie.Actors}</Text>
             <Text style={styles.footerText}><Text style={styles.boldText}>Director: </Text>{movie.Director}</Text>
             <Text style={styles.footerText}><Text style={styles.boldText}>Genre: </Text>{movie.Genre}</Text>
-            {/* <Text
-                style={styles.link}
-                onPress={() => Linking.openURL(url)}
-            >
-                {url}
-            </Text> */}
           </View>
         </View>
       ) : null}
@@ -93,20 +92,22 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 14,
   },
+  titleContainer: {
+    flexShrink: 1,
+  },
   title: {
     fontSize: 20,
     fontWeight: "900",
+    flexWrap: 'wrap',
     marginTop: 30,
-    // marginBottom: 4,
     marginLeft: 15,
     color: '#000',
     flexShrink: 1,
-    textAlign: 'justify'
+    textAlign: 'auto'
   },
   year: {
     fontSize: 12,
     fontWeight: "900",
-    // marginTop: 5,
     marginLeft: 15,
     color: '#000',
     flexShrink: 1,
@@ -142,6 +143,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#575757",
     marginTop: 10,
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
   },
 })
