@@ -8,5 +8,6 @@ module.exports = {
     'eol-last': 0,
     'comma-dangle': 0,
     quotes: 0,
+    'jsx-quotes': 0,
   },
 };

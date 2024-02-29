@@ -9,15 +9,21 @@ export type RootStackParamList = {
 }
 
 export type Movie = {
-  id: string;
-  title: string;
-  image: string;
-  rating: string;
-  description: string;
+  imdbID: string;
+  Title: string;
+  Poster: string;
+  imdbRating: string;
+  Plot: string;
+  LongPlot: string;
+  Director?: string;
+  Actors?: string;
+  Genre?: string;
+  Year?: string;
+  Country?: string;
 }
 
 export type MoviesListType ={
-  movies: Movie[];
+  movie: Movie;
   isSuccess: boolean;
   isLoading: boolean;
   isError: boolean;
