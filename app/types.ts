@@ -27,5 +27,6 @@ export type MoviesListType ={
   isSuccess: boolean;
   isLoading: boolean;
   isError: boolean;
+  isFinished: boolean;
   errorMessage: string;
 }
