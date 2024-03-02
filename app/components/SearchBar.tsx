@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { StyleSheet, TextInput, View, ViewStyle } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -38,6 +38,17 @@ const SearchBar = ({ name, year, onChangeName, onChangeYear, onSubmit }: SearchB
     );
 };
 
+export default SearchBar;
+
+interface Styles {
+    container: ViewStyle;
+    touchableIcon: ViewStyle;
+    inputName: ViewStyle;
+    inputYear: ViewStyle;
+    icon: ViewStyle;
+    [key: string]: ViewStyle;
+}
+
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
@@ -74,5 +85,3 @@ const styles = StyleSheet.create({
         margin: 0,
     },
 });
-
-export default SearchBar;

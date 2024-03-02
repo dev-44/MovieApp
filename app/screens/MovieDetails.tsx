@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { ActivityIndicator, Image, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Image, StyleSheet, Text, TextStyle, View, ViewStyle, ImageStyle } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native'
@@ -19,7 +19,8 @@ const MovieDetails = ({ navigation, route }: MovieDetailsProps) => {
 
   const dispatch = useDispatch<AppDispatch>()
   const id = route.params?.id || ''
-  const { movie, isSuccess, isLoading } = useSelector((state: RootState) => state.movies)
+  const movies = useSelector((state: RootState) => state.movies)
+  const { movie, isSuccess, isLoading } = movies
 
   useEffect(() => {
     if (id) {
@@ -69,7 +70,23 @@ const MovieDetails = ({ navigation, route }: MovieDetailsProps) => {
 
 export default MovieDetails
 
-const styles = StyleSheet.create({
+interface Styles {
+  card: ViewStyle;
+  header: ViewStyle;
+  image: ImageStyle;
+  titleContainer: ViewStyle;
+  title: TextStyle;
+  year: TextStyle;
+  country: TextStyle;
+  text: TextStyle;
+  boldText: TextStyle;
+  description: TextStyle;
+  footer: ViewStyle;
+  footerText: TextStyle;
+  [key: string]: ViewStyle | TextStyle | ImageStyle;
+}
+
+const styles = StyleSheet.create<Styles>({
   card: {
     borderRadius: 28,
     padding: 16,

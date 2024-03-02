@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator, ViewStyle, TextStyle } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { getMovies, reset, setSearchData } from '../store/movies/moviesSlice'
@@ -11,7 +11,8 @@ type TitleType = 'Busqueda por Nombre' | 'Busqueda por Nombre y Año' | '';
 const HomeScreen = () => {
 
   const dispatch = useDispatch<AppDispatch>()
-  const { movies, isLoading, isError, isSuccess, isFinished } = useSelector((state: RootState) => state.movies);
+  const movies = useSelector((state: RootState) => state.movies);
+  const { moviesList, isLoading, isSuccess, isFinished } = movies
 
   const [movieName, onChangeMovieName] = useState<string>('');
   const [movieYear, onChangeMovieYear] = useState<string>('');
@@ -29,7 +30,7 @@ const HomeScreen = () => {
     }
   }, [isSuccess, movieName.length, movieYear.length])
 
-  const onSubmitSearchByName = () => {
+  const onSubmit = () => {
 
     const movieData = {
       name: movieName,
@@ -40,38 +41,46 @@ const HomeScreen = () => {
     dispatch(getMovies({ ...movieData, page: 1 }));
   }
 
+
+
   return (
-    <View style={styles.container}>
-      <SafeAreaView style={styles.container}>
-        <SearchBar name={movieName} year={movieYear} onChangeName={onChangeMovieName} onChangeYear={onChangeMovieYear} onSubmit={onSubmitSearchByName} />
-        {isFinished && movies.length > 0 ? (
-          <ResultsList results={movies} title={title} />
-        ) : (isFinished && (movies.length === 0 || !movieName)) ? <Text style={styles.text}>No se encontraron resultados</Text> : null}
-        {isLoading ? <ActivityIndicator size="large" color='#0B6FC7' /> : null}
-        {(!isFinished && movies.length === 0 && !isLoading) ? (
-          <View style={styles.welcomeText}>
-            <Icon name='ticket-alt' size={30} color="black" style={styles.icon} />
-            <Text style={styles.text}>Busque una pelicula</Text>
-          </View>
-        ) : null}
-      </SafeAreaView>
-    </View >
+    <>
+      <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+          <SearchBar name={movieName} year={movieYear} onChangeName={onChangeMovieName} onChangeYear={onChangeMovieYear} onSubmit={onSubmit} />
+          {isLoading ? <ActivityIndicator size="large" color='#0B6FC7' /> : moviesList.length > 0 ? (
+            <ResultsList title={title} />
+          ) : !isFinished ? (
+            <View style={styles.welcomeText}>
+              <Icon name='ticket-alt' size={30} color="black" style={styles.icon} />
+              <Text style={styles.text}>Busque una pelicula</Text>
+            </View>
+          ) : (
+            (
+              <Text style={styles.text}>No se encontraron resultados</Text>
+            )
+          )}
+        </SafeAreaView>
+      </View >
+    </>
   );
 };
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({
+interface Styles {
+  container: ViewStyle;
+  text: TextStyle;
+  welcomeText: ViewStyle;
+  icon: ViewStyle;
+  [key: string]: ViewStyle | TextStyle;
+}
+
+const styles = StyleSheet.create<Styles>({
   container: {
-    marginVertical: 15,
+    marginBottom: 30,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
   },
   text: {
     fontSize: 20,

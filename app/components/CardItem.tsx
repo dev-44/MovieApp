@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { Image, StyleSheet, Text, Touchable, View } from 'react-native'
+import React from 'react'
+import { Image, ImageStyle, StyleSheet, Text, TextStyle, Touchable, View, ViewStyle } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { MovieDetailsNavigationProp } from '../screens/MovieDetails';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -39,6 +39,19 @@ const CardItem = (props: CardItemProps) => {
 }
 
 export default CardItem
+
+interface Styles {
+    card: ViewStyle;
+    container: ViewStyle;
+    titleContainer: ViewStyle;
+    title: TextStyle;
+    yearContainer: ViewStyle;
+    year: TextStyle;
+    text: TextStyle;
+    image: ImageStyle;
+    boldText: TextStyle;
+    [key: string]: ViewStyle | TextStyle | ImageStyle;
+}
 
 const styles = StyleSheet.create({
     card: {

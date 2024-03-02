@@ -2,9 +2,10 @@ import React from 'react';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { MoviesListType } from '../../types';
 import moviesService from './moviesService';
+import { RootState } from '../index';
 
 const initialState: MoviesListType = {
-  movies: [],
+  moviesList: [],
   movie: {
     imdbID: '',
     Title: '',
@@ -29,6 +30,30 @@ const initialState: MoviesListType = {
 
 // Get movie by Name and Year
 export const getMovies = createAsyncThunk('movies/getMovies', async (data: {name: string; year: string, page: number}, thunkAPI) => {
+  try {
+    const { name, year, page } = data;
+    const result =  await moviesService.getMovies(name, year, page)
+    if (result.Response === 'True') {
+      // if (page > 1) {
+      //   const prevData = (thunkAPI.getState() as RootState).movies.movies
+      //   console.log('PrevData', prevData)
+      //   result.Search = [...prevData, ...result.Search]
+      //   console.log('PAGE >>> 1', result.Search)
+      //   return result
+      // }
+      // console.log('PAGE === 1', result.Search)
+      return result
+    } else {
+      throw new Error('Movie not found')
+    }
+  } catch (error: any) {
+    const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+})
+
+// Get More Movies by Pagination
+export const getMoreMovies = createAsyncThunk('movies/getMoreMovies', async (data: {name: string; year: string, page: number}, thunkAPI) => {
   try {
     const { name, year, page } = data;
     const result =  await moviesService.getMovies(name, year, page)
@@ -78,11 +103,27 @@ export const moviesSlice = createSlice({
       addCase(getMovies.fulfilled, (state, action: PayloadAction<any>) => {
         state.isLoading = false
         state.isSuccess = true
-        state.movies = action.payload.Search
+        state.moviesList = action.payload.Search
         state.totalResults = action.payload.totalResults
         state.isFinished = true
       }).
       addCase(getMovies.rejected, (state, action: PayloadAction<any>) => {
+        state.isLoading = false
+        state.isError = true
+        state.errorMessage = action.payload
+        state.isFinished = true
+      }).
+      addCase(getMoreMovies.pending, (state) => {
+        state.isLoading = true
+        state.isFinished = false
+      }).
+      addCase(getMoreMovies.fulfilled, (state, action: PayloadAction<any>) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.moviesList = [...state.moviesList, ...action.payload.Search]
+        state.isFinished = true
+      }).
+      addCase(getMoreMovies.rejected, (state, action: PayloadAction<any>) => {
         state.isLoading = false
         state.isError = true
         state.errorMessage = action.payload
