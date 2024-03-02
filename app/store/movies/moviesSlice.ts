@@ -2,10 +2,10 @@ import React from 'react';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { MoviesListType } from '../../types';
 import moviesService from './moviesService';
-import { RootState } from '../index';
 
 const initialState: MoviesListType = {
   moviesList: [],
+  favorites: [],
   movie: {
     imdbID: '',
     Title: '',
@@ -34,14 +34,6 @@ export const getMovies = createAsyncThunk('movies/getMovies', async (data: {name
     const { name, year, page } = data;
     const result =  await moviesService.getMovies(name, year, page)
     if (result.Response === 'True') {
-      // if (page > 1) {
-      //   const prevData = (thunkAPI.getState() as RootState).movies.movies
-      //   console.log('PrevData', prevData)
-      //   result.Search = [...prevData, ...result.Search]
-      //   console.log('PAGE >>> 1', result.Search)
-      //   return result
-      // }
-      // console.log('PAGE === 1', result.Search)
       return result
     } else {
       throw new Error('Movie not found')
@@ -93,6 +85,13 @@ export const moviesSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => initialState,
+    addFavorite: (state, action: PayloadAction<any>) => {
+      console.log('payload', action.payload)
+      state.favorites.push(action.payload)
+    },
+    removeFavorite: (state, action: PayloadAction<any>) => {
+      state.favorites = state.favorites.filter((movie) => movie.imdbID !== action.payload)
+    },
   },
   extraReducers: (builder) => {
     builder.
@@ -152,5 +151,5 @@ export const moviesSlice = createSlice({
   }
 })
 
-export const { reset } = moviesSlice.actions;
+export const { reset, addFavorite, removeFavorite } = moviesSlice.actions;
 export default moviesSlice.reducer;

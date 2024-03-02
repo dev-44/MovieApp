@@ -20,6 +20,7 @@ export type Movie = {
 
 export type MoviesListType ={
   moviesList: Movie[],
+  favorites: Movie[],
   movie: Movie;
   isSuccess: boolean;
   isLoading: boolean;

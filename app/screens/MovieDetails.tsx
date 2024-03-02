@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
-import { ActivityIndicator, Image, StyleSheet, Text, TextStyle, View, ViewStyle, ImageStyle } from 'react-native'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import { ActivityIndicator, Image, StyleSheet, Text, TextStyle, View, ViewStyle, ImageStyle, Pressable } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native'
+import Icon from 'react-native-vector-icons/Ionicons';
 import { RootStackParamList } from '../types';
-import { getMovieById, reset } from '../store/movies/moviesSlice'
+import { getMovieById, addFavorite, removeFavorite } from '../store/movies/moviesSlice'
 import { AppDispatch, RootState } from '../store';
 
 export type MovieDetailsNavigationProp = StackNavigationProp<RootStackParamList, 'MovieDetails'>
@@ -20,7 +21,8 @@ const MovieDetails = ({ navigation, route }: MovieDetailsProps) => {
   const dispatch = useDispatch<AppDispatch>()
   const id = route.params?.id || ''
   const movies = useSelector((state: RootState) => state.movies)
-  const { movie, isSuccess, isLoading } = movies
+  const { movie, isSuccess, isLoading, favorites } = movies
+  const [isFavorite, setIsFavorite] = useState<boolean>(false)
 
   useEffect(() => {
     if (id) {
@@ -29,11 +31,32 @@ const MovieDetails = ({ navigation, route }: MovieDetailsProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    if (movie.imdbID !== '') {
-      navigation.setOptions({ title: movie.Title })
+  const favoriteStatusHandler = useCallback(() => {
+    if (isFavorite) {
+      dispatch(removeFavorite(movie.imdbID))
+      setIsFavorite(false)
+    } else {
+      console.log('Movie', movie)
+      dispatch(addFavorite(movie))
+      setIsFavorite(true)
     }
-  }, [movie, navigation])
+  }, [dispatch, isFavorite, movie])
+
+  useLayoutEffect(() => {
+    if (movie.imdbID !== '') {
+      navigation.setOptions({
+        title: movie.Title,
+        headerRight: () => {
+          return (
+            <Pressable onPress={favoriteStatusHandler} style={({ pressed }) => pressed && styles.pressed}>
+              <Icon size={24} color="yellow" name={isFavorite ? 'star' : 'star-outline'} style={{ marginEnd: 5 }} />
+            </Pressable>
+          )
+        }
+      })
+      setIsFavorite(favorites.some((item) => item.imdbID === movie.imdbID))
+    }
+  }, [isFavorite, navigation, favoriteStatusHandler, favorites, movie.Title, movie.imdbID])
 
   return (
     <>
@@ -83,6 +106,7 @@ interface Styles {
   description: TextStyle;
   footer: ViewStyle;
   footerText: TextStyle;
+  pressed: ViewStyle;
   [key: string]: ViewStyle | TextStyle | ImageStyle;
 }
 
@@ -161,5 +185,8 @@ const styles = StyleSheet.create<Styles>({
     color: "#575757",
     marginTop: 10,
     alignSelf: 'flex-start',
+  },
+  pressed: {
+    opacity: 0.7,
   },
 })

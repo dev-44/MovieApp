@@ -1,6 +1,5 @@
 import React from 'react'
-import { StyleSheet, TextInput, View, ViewStyle } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, TextInput, TextStyle, View, ViewStyle, } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 type SearchBarProps = {
@@ -14,10 +13,7 @@ type SearchBarProps = {
 const SearchBar = ({ name, year, onChangeName, onChangeYear, onSubmit }: SearchBarProps) => {
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={onSubmit}>
-                <Icon name="search" size={30} color="black" style={styles.icon} />
-            </TouchableOpacity>
-
+            <Icon.Button name="search" size={30} color="black" backgroundColor='#e0e0e0' borderRadius={10} onPress={onSubmit} />
             <TextInput
                 placeholder="Buscar por nombre"
                 placeholderTextColor="gray"
@@ -42,14 +38,13 @@ export default SearchBar;
 
 interface Styles {
     container: ViewStyle;
-    touchableIcon: ViewStyle;
-    inputName: ViewStyle;
-    inputYear: ViewStyle;
+    inputName: ViewStyle & TextStyle;
+    inputYear: ViewStyle & TextStyle;
     icon: ViewStyle;
     [key: string]: ViewStyle;
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -57,11 +52,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginHorizontal: 15,
         marginVertical: 10,
-    },
-    touchableIcon: {
-        backgroundColor: '#e0e0e0',
-        width: 40,
-        height: 40,
     },
     inputName: {
         flex: 0.7,
@@ -82,6 +72,6 @@ const styles = StyleSheet.create({
         padding: 10
     },
     icon: {
-        margin: 0,
+        alignSelf: 'center'
     },
 });

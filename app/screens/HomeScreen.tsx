@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ActivityIndicator, ViewStyle, TextStyle } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { getMovies, reset, setSearchData } from '../store/movies/moviesSlice'
+import { getMovies, setSearchData } from '../store/movies/moviesSlice'
 import { AppDispatch, RootState } from '../store';
 import ResultsList from '../components/ResultsList';
 import SearchBar from '../components/SearchBar';
@@ -31,13 +31,11 @@ const HomeScreen = () => {
   }, [isSuccess, movieName.length, movieYear.length])
 
   const onSubmit = () => {
-
     const movieData = {
       name: movieName,
       year: movieYear,
     }
     dispatch(setSearchData(movieData))
-    dispatch(reset())
     dispatch(getMovies({ ...movieData, page: 1 }));
   }
 
@@ -78,7 +76,7 @@ interface Styles {
 
 const styles = StyleSheet.create<Styles>({
   container: {
-    marginBottom: 30,
+    marginBottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -88,6 +86,7 @@ const styles = StyleSheet.create<Styles>({
     color: 'black'
   },
   welcomeText: {
+    marginTop: 10,
     flexDirection: 'row',
   },
   icon: {

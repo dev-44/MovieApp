@@ -1,8 +1,7 @@
 import React from 'react'
-import { Image, ImageStyle, StyleSheet, Text, TextStyle, Touchable, View, ViewStyle } from 'react-native'
+import { Image, ImageStyle, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { MovieDetailsNavigationProp } from '../screens/MovieDetails';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type CardItemProps = {
     imdbID: string;
@@ -53,7 +52,7 @@ interface Styles {
     [key: string]: ViewStyle | TextStyle | ImageStyle;
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
     card: {
         borderRadius: 28,
         padding: 10,
@@ -103,6 +102,4 @@ const styles = StyleSheet.create({
     boldText: {
         fontWeight: 'bold',
     },
-
-
 })

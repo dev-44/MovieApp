@@ -5,7 +5,6 @@ import { Movie } from '../types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 import moviesService from '../store/movies/moviesService'
-import axios from 'axios';
 
 type ResultsListProps = {
     title: string;
@@ -37,10 +36,10 @@ const ResultsList = ({ title }: ResultsListProps) => {
     };
 
     const handleEndReached = () => {
-        setLoading(true)
-        setTimeout(() => setLoading(false), 3000)
-        pageRef.current = pageRef.current + 1;
         if (moviesData.length < totalResults) {
+            setLoading(true)
+            setTimeout(() => setLoading(false), 3000)
+            pageRef.current = pageRef.current + 1;
             fetchData();
         }
 
@@ -87,7 +86,7 @@ interface Styles {
     [key: string]: ViewStyle | TextStyle;
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create<Styles>({
     container: {
         flex: 1,
         marginTop: 8,
