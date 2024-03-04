@@ -1,8 +1,9 @@
 apply plugin: "com.android.application"
 
 project.ext.envConfigFiles = [
-    dev: ".env.dev",
-    release: ".env.prod",
+        development: ".env.development",
+        staging :".env.staging",
+        production:'.env.production'
 ]
 
 apply plugin: "org.jetbrains.kotlin.android"
@@ -87,6 +88,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        resValue 'string', 'build_config_package','com.ittimovieapp'
     }
     signingConfigs {
         debug {
@@ -106,6 +108,21 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+        flavorDimensions 'env'
+    productFlavors {
+        development {
+            dimension 'env'
+            applicationIdSuffix ".development"
+        }
+        staging {
+            dimension 'env'
+            applicationIdSuffix ".staging"
+        }
+        production {
+            dimension 'env'
+            applicationIdSuffix ""
         }
     }
 }
