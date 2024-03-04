@@ -17,14 +17,16 @@ const FavoritesScreen = () => {
     return (
 
         <View style={styles.container}>
-            <Text style={styles.titleStyle}>Favoritos</Text>
-            <View style={styles.resultsContainer}>
-                <FlatList
-                    data={favorites}
-                    keyExtractor={(item) => item.imdbID}
-                    renderItem={renderMovieItem}
-                />
-            </View>
+            {favorites.length === 0 ? <Text style={styles.titleStyle}>Aún no hay favoritos</Text> : (
+                <View style={styles.resultsContainer}>
+                    <FlatList
+                        data={favorites}
+                        keyExtractor={(item) => item.imdbID}
+                        renderItem={renderMovieItem}
+                    />
+                </View>
+            )}
+
         </View>
 
     )

@@ -1,6 +1,6 @@
 import axios from "axios";
-import {API_KEY} from '@env'
-const API_URL = `http://www.omdbapi.com/?apikey=${API_KEY}`
+import Config from "react-native-config";
+const API_URL = `http://www.omdbapi.com/?apikey=${Config.API_KEY}`
 
 //Get Movies
 const getMovies = async (name: string, year: string = '', page = 1) => {

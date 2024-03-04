@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, ImageStyle, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Image, ImageStyle, Pressable, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 import { MovieDetailsNavigationProp } from '../screens/MovieDetails';
 
@@ -18,7 +18,7 @@ const CardItem = (props: CardItemProps) => {
         navigation.navigate("MovieDetails", { id: imdbID })
     }
     return (
-        <TouchableOpacity onPress={handleTap}>
+        <Pressable onPress={handleTap} style={({ pressed }) => pressed && styles.pressed}>
             <View style={styles.card}>
                 <Image source={Poster !== "N/A" ? { uri: Poster } : require('../assets/denise-jans-Lq6rcifGjOU-unsplash.jpg')} style={styles.image} alt='no-image' />
 
@@ -30,10 +30,8 @@ const CardItem = (props: CardItemProps) => {
                         <Text style={styles.year}>{Year}</Text>
                     </View>
                 </View>
-
-
             </View>
-        </TouchableOpacity>
+        </Pressable>
     )
 }
 
@@ -49,6 +47,7 @@ interface Styles {
     text: TextStyle;
     image: ImageStyle;
     boldText: TextStyle;
+    pressed: ViewStyle;
     [key: string]: ViewStyle | TextStyle | ImageStyle;
 }
 
@@ -101,5 +100,8 @@ const styles = StyleSheet.create<Styles>({
     },
     boldText: {
         fontWeight: 'bold',
+    },
+    pressed: {
+        opacity: 0.7,
     },
 })
